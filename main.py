@@ -2,6 +2,7 @@ import pygame
 import random
 
 #=========================== Classes and methods===============
+#This class is in charge of set hitbox to the screen interface
 class Box():
 
     def __init__(self, xStart, xEnd, yStart, yEnd):
@@ -12,7 +13,7 @@ class Box():
         #self.square = (self._xStart, self._xEnd, self._yStart, self._yEnd)
     def check_limits(self, x, y):
         if self._xStart <= x <= self._xEnd and self._yStart <= y <= self._yEnd:
-            print("on the limits")
+            return True
 
 # JUST FOR TESTING PROPOSES. It does what it says it blit the different hands in to the game.
 #   def draw_hands(x, y):
@@ -84,8 +85,8 @@ paper = pygame.transform.chop(handsOriginalResolution, (0, 0, 220, 0))
 rockF = pygame.transform.flip(rock, False, True)
 scissorsF = pygame.transform.flip(scissors, False, True)
 paperF = pygame.transform.flip(paper, False, True)
-
-# Hitbox
+# Important objects
+# Hitboxes
 handHitbox = Box(312, 467, 385, 541)
 
 # black = pygame.transform.chop(test,(0,0,250,0))
@@ -93,11 +94,14 @@ handHitbox = Box(312, 467, 385, 541)
 # ===================================================GAME LOOP=================================
 
 while running:
+    x, y = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    x,y = pygame.mouse.get_pos()
-    handHitbox.check_limits(x,y)
+        if event.type == pygame.MOUSEBUTTONDOWN and handHitbox.check_limits(x, y):
+            print("yea you click it")
+
+
 
     screen.fill((10, 200, 3))
     generate_interface()
